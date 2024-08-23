@@ -39,7 +39,7 @@ publishing {
             from components.getByName("release")
             groupId = "com.github.Teyuto"
             artifactId = "teyuto-exoplayer-analytics"
-            version = "0.2.3"
+            version = "0.2.4"
         }
     }
     repositories {
