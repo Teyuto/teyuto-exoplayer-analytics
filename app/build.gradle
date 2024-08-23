@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'maven-publish' // Aggiungi questo
 }
 
 android {
@@ -12,7 +13,6 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -23,14 +23,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+}
+
+publishing {
+    publications {
+        // Create a publication
+        create("release", MavenPublication::class.java) {
+            from components.findByName("release")
+            groupId = "com.github.Teyuto"
+            artifactId = "teyuto-exoplayer-analytics"
+            version = "1.0.0"
+        }
+    }
+    repositories {
+        maven {
+            url = uri("${buildDir}/repo")
+        }
     }
 }
 
