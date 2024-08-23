@@ -1,7 +1,9 @@
+// app/build.gradle
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'maven-publish' // Aggiungi questo
+    id 'maven-publish'
 }
 
 android {
@@ -13,6 +15,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -34,12 +37,11 @@ android {
 
 publishing {
     publications {
-        // Create a publication
-        create("release", MavenPublication::class.java) {
-            from components.findByName("release")
+        create("release", MavenPublication) {
+            from components.getByName("release")
             groupId = "com.github.Teyuto"
             artifactId = "teyuto-exoplayer-analytics"
-            version = "0.2.1"
+            version = "0.2.2"
         }
     }
     repositories {
