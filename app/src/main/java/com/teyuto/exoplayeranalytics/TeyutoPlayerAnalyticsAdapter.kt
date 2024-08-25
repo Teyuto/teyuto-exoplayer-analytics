@@ -33,16 +33,17 @@ class TeyutoPlayerAnalyticsAdapter(token: String) : TeyutoPlayerAnalytics(token)
         exoPlayer = player as ExoPlayer
         
         // Recupera i listener esistenti
-        val existingListeners = exoPlayer.listeners
+        //val existingListeners = exoPlayer.listeners
         
         // Crea una lista combinata di listener
-        val combinedListeners = mutableListOf<Player.Listener>()
-        combinedListeners.addAll(existingListeners)
-        combinedListeners.add(analyticsListener)
+        //val combinedListeners = mutableListOf<Player.Listener>()
+        //combinedListeners.addAll(existingListeners)
+        //combinedListeners.add(analyticsListener)
         
         // Sostituisci i listener esistenti con un CompositePlayerListener
-        exoPlayer.clearListeners()
-        exoPlayer.addListener(CompositePlayerListener(combinedListeners))
+        //exoPlayer.clearListeners()
+        //exoPlayer.addListener(CompositePlayerListener(combinedListeners))
+        exoPlayer.addListener(analyticsListener)
     }
 
     override fun isPlaying(): Boolean = exoPlayer.isPlaying
