@@ -3,6 +3,7 @@ package com.teyuto.exoplayeranalytics
 import android.os.Handler
 import android.os.Looper
 import okhttp3.*
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 
@@ -47,17 +48,11 @@ abstract class TeyutoPlayerAnalytics(private val token: String) {
     }
 
     private fun updateTimeVideo(time: Long, end: Int) {
-        val json = JSONObject().apply {
-            put("id", videoId)
-            put("time", time)
-            put("action", currentAction)
-            put("end", end)
-            put("sp", secondsPlayed)
-        }
+        val formData = "id=${videoId}&time=${time}&action=${currentAction}&end=${end}&sp=${secondsPlayed}"
 
         val request = Request.Builder()
             .url("$apiUrl/video/?f=action_update")
-            .post(RequestBody.create(MediaType.parse("application/json"), json.toString()))
+            .post(RequestBody.create("application/x-www-form-urlencoded".toMediaTypeOrNull(), formData))
             .addHeader("Authorization", "Bearer $token")
             .build()
 
@@ -73,15 +68,11 @@ abstract class TeyutoPlayerAnalytics(private val token: String) {
     }
 
     private fun timeEnter(time: Long) {
-        val json = JSONObject().apply {
-            put("id", videoId)
-            put("time", time)
-            put("firstTime", if (firstTimeEnter) 1 else 0)
-        }
+        val formData = "id=${videoId}&time=${time}&firstTime=${if (firstTimeEnter) 1 else 0}"
 
         val request = Request.Builder()
             .url("$apiUrl/video/?f=action_enter")
-            .post(RequestBody.create(MediaType.parse("application/json"), json.toString()))
+            .post(RequestBody.create("application/x-www-form-urlencoded".toMediaTypeOrNull(), formData))
             .addHeader("Authorization", "Bearer $token")
             .build()
 
@@ -91,9 +82,9 @@ abstract class TeyutoPlayerAnalytics(private val token: String) {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                response.body()?.string()?.let { responseBody ->
-                    val jsonResponse = JSONObject(responseBody)
-                    currentAction = jsonResponse.getJSONArray("0").getJSONObject(0).getString("action")
+                response.body?.string()?.let { responseBody ->
+                    val jsonResponse = JSONArray(responseBody)
+                    currentAction = jsonResponse.getJSONObject(0).getString("action")
                     firstTimeEnter = false
                 }
             }
@@ -116,7 +107,7 @@ abstract class TeyutoPlayerAnalytics(private val token: String) {
     protected abstract fun getCurrentTime(): Long
     protected abstract fun getDuration(): Long
 
-    fun destroy() {
+    open fun destroy() {
         updateHandler?.removeCallbacksAndMessages(null)
     }
 }
