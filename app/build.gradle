@@ -38,7 +38,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.github.koosoftware'
+                groupId = 'com.github.Teyuto'
                 artifactId = 'teyuto-exoplayer-analytics'
                 version = '0.3.2'
             }
