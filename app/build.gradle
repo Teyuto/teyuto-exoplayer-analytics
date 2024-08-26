@@ -40,7 +40,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.Teyuto'
                 artifactId = 'teyuto-exoplayer-analytics'
-                version = '0.3.3'
+                version = '0.3.5'
             }
         }
         repositories {

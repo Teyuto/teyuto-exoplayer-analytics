@@ -14,7 +14,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 
-abstract class TeyutoPlayerAnalytics(private val channel: String, private val token: String) {
+abstract class TeyutoPlayerAnalytics(private val channel: String, private val token: String? = null) {
     private val apiUrl = "https://api.teyuto.tv/v1"
     private var videoId: String? = null
     protected var player: Any? = null
@@ -57,12 +57,7 @@ abstract class TeyutoPlayerAnalytics(private val channel: String, private val to
     private fun updateTimeVideo(time: Long, end: Int) {
         val formData = "id=${videoId}&time=${time}&action=${currentAction}&end=${end}&sp=${secondsPlayed}"
 
-        val request = Request.Builder()
-            .url("$apiUrl/video/?f=action_update")
-            .post(RequestBody.create("application/x-www-form-urlencoded".toMediaTypeOrNull(), formData))
-            .addHeader("Authorization", "Bearer $token")
-            .addHeader("channel", "$channel")
-            .build()
+        val request = buildRequest("$apiUrl/video/?f=action_update", formData)
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -78,12 +73,7 @@ abstract class TeyutoPlayerAnalytics(private val channel: String, private val to
     private fun timeEnter(time: Long) {
         val formData = "id=${videoId}&time=${time}&firstTime=${if (firstTimeEnter) 1 else 0}"
 
-        val request = Request.Builder()
-            .url("$apiUrl/video/?f=action_enter")
-            .post(RequestBody.create("application/x-www-form-urlencoded".toMediaTypeOrNull(), formData))
-            .addHeader("Authorization", "Bearer $token")
-            .addHeader("channel", "$channel")
-            .build()
+        val request = buildRequest("$apiUrl/video/?f=action_enter", formData)
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -98,6 +88,19 @@ abstract class TeyutoPlayerAnalytics(private val channel: String, private val to
                 }
             }
         })
+    }
+
+    private fun buildRequest(url: String, formData: String): Request {
+        val requestBuilder = Request.Builder()
+            .url(url)
+            .post(RequestBody.create("application/x-www-form-urlencoded".toMediaTypeOrNull(), formData))
+            .addHeader("channel", channel)
+
+        token?.let {
+            requestBuilder.addHeader("Authorization", "Bearer $it")
+        }
+
+        return requestBuilder.build()
     }
 
     fun onPlay() {

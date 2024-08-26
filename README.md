@@ -6,7 +6,7 @@
 
 ## Overview
 
-This SDK provides analytics tracking for ExoPlayer in Android applications.
+This SDK provides analytical monitoring for Teyuto with ExoPlayer in Android applications.
 
 ## Installation
 
@@ -31,6 +31,10 @@ dependencies {
 
 ## Usage
 
+The Teyuto ExoPlayer Analytics SDK now supports optional authentication tokens. You can initialize the SDK with or without a token, depending on your requirements.
+
+### Initializing with a Token
+
 ```kotlin
 import com.teyuto.exoplayeranalytics.TeyutoPlayerAnalyticsAdapter
 import com.google.android.exoplayer2.ExoPlayer
@@ -48,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         val mediaItem = MediaItem.fromUri("https://example.com/video.mp4")
         player.setMediaItem(mediaItem)
 
-        analytics = TeyutoPlayerAnalyticsAdapter("your-auth-token-here")
-        analytics.init(player, "your-video-id-here")
+        analytics = TeyutoPlayerAnalyticsAdapter("channel-public", "user-auth-token")
+        analytics.init(player, "video-id")
 
         player.prepare()
     }
@@ -60,5 +64,29 @@ class MainActivity : AppCompatActivity() {
         player.release()
     }
 }
-
 ```
+
+### Initializing without a Token
+
+If you don't need to use an authentication token, you can initialize the SDK with just the channel:
+
+```kotlin
+analytics = TeyutoPlayerAnalyticsAdapter("your-channel-public")
+analytics.init(player, "your-video-id-here")
+```
+
+## Note on Authentication
+
+The token is optional when initializing the TeyutoPlayerAnalyticsAdapter. If you provide a token, it will be included in the API requests. If you don't provide a token, the requests will be made without authentication.
+
+## Additional Information
+
+For more details on how to use the Teyuto ExoPlayer Analytics SDK, including advanced features and configurations, please refer to our [official documentation](https://docs.teyuto.com/developer).
+
+## Support
+
+If you encounter any issues or have questions about using the SDK, please open an issue on our GitHub repository or contact our support team at support@teyuto.com.
+
+## License
+
+This SDK is released under the [MIT License](LICENSE).
