@@ -15,7 +15,7 @@ class CompositePlayerListener(private val listeners: List<Player.Listener>) : Pl
     // ...
 }
 
-class TeyutoPlayerAnalyticsAdapter(token: String) : TeyutoPlayerAnalytics(token) {
+class TeyutoPlayerAnalyticsAdapter(channel: String, token: String) : TeyutoPlayerAnalytics(channel, token) {
     private lateinit var exoPlayer: ExoPlayer
     private val analyticsListener = object : Player.Listener {
         override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
