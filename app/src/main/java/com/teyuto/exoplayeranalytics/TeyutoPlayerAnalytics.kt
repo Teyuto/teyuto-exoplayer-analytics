@@ -14,7 +14,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 
-abstract class TeyutoPlayerAnalytics(private val token: String) {
+abstract class TeyutoPlayerAnalytics(private val channel: String, private val token: String) {
     private val apiUrl = "https://api.teyuto.tv/v1"
     private var videoId: String? = null
     protected var player: Any? = null
@@ -61,6 +61,7 @@ abstract class TeyutoPlayerAnalytics(private val token: String) {
             .url("$apiUrl/video/?f=action_update")
             .post(RequestBody.create("application/x-www-form-urlencoded".toMediaTypeOrNull(), formData))
             .addHeader("Authorization", "Bearer $token")
+            .addHeader("channel", "$channel")
             .build()
 
         client.newCall(request).enqueue(object : Callback {
@@ -81,6 +82,7 @@ abstract class TeyutoPlayerAnalytics(private val token: String) {
             .url("$apiUrl/video/?f=action_enter")
             .post(RequestBody.create("application/x-www-form-urlencoded".toMediaTypeOrNull(), formData))
             .addHeader("Authorization", "Bearer $token")
+            .addHeader("channel", "$channel")
             .build()
 
         client.newCall(request).enqueue(object : Callback {
