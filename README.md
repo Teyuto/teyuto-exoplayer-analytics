@@ -25,7 +25,7 @@ Then, add the dependency to your app's `build.gradle`:
 
 ```gradle
 dependencies {
-    implementation 'com.github.teyuto:teyuto-exoplayer-analytics:0.3.5'
+    implementation 'com.github.teyuto:teyuto-exoplayer-analytics:0.3.6'
 }
 ```
 

@@ -97,7 +97,7 @@ abstract class TeyutoPlayerAnalytics(private val channel: String, private val to
             .addHeader("channel", channel)
 
         token?.let {
-            requestBuilder.addHeader("Authorization", "Bearer $it")
+            requestBuilder.addHeader("Authorization", "$it")
         }
 
         return requestBuilder.build()
